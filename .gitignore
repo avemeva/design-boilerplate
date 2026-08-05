@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Reference screenshots are not ours to redistribute — see
+# design-reference/README.md for what was measured out of them.
+design-reference/*.png
+design-reference/*.jpg

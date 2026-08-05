@@ -1,0 +1,170 @@
+{
+ "generatedAt": "2026-08-05T20:59:04.390Z",
+ "total": 373,
+ "rules": [
+  {
+   "tool": "biome",
+   "rule": "lint/suspicious/noArrayIndexKey",
+   "severity": "warning",
+   "file": "components/resources/demos/r-0xgf-boneyard.tsx",
+   "message": "Avoid using the index of an array as key property in an element.",
+   "count": 90,
+   "files": [
+    "components/resources/demos/r-0xgf-boneyard.tsx",
+    "components/resources/demos/r-assistant-ui.tsx",
+    "components/resources/demos/r-design-system-checklist.tsx",
+    "components/resources/demos/r-design-systems-surf.tsx"
+   ]
+  },
+  {
+   "tool": "react-doctor",
+   "rule": "no-array-index-as-key",
+   "severity": "warning",
+   "file": "components/resources/demos/r-assistant-ui.tsx",
+   "message": "Array index used as a key",
+   "count": 53,
+   "files": [
+    "components/resources/demos/r-assistant-ui.tsx",
+    "components/resources/demos/r-calligraph.tsx",
+    "components/resources/demos/r-devl-dev-ui-experiments-built-on-coss-ui.tsx",
+    "components/resources/demos/r-devl-dev.tsx"
+   ]
+  },
+  {
+   "tool": "biome",
+   "rule": "assist/source/organizeImports",
+   "severity": "error",
+   "file": "app/design-system/page.tsx",
+   "message": "Sort these imports.",
+   "count": 51,
+   "files": [
+    "app/design-system/page.tsx",
+    "app/page.tsx",
+    "components/before-after.tsx",
+    "components/contents.tsx"
+   ]
+  },
+  {
+   "tool": "biome",
+   "rule": "lint/a11y/useSemanticElements",
+   "severity": "error",
+   "file": "components/resources/demos/r-design-system-checklist.tsx",
+   "message": "The elements with this role can be changed to the following elements:\n<input type=\"checkbox\">",
+   "count": 25,
+   "files": [
+    "components/resources/demos/r-design-system-checklist.tsx",
+    "components/resources/demos/r-design-systems-surf.tsx",
+    "components/resources/demos/r-devl-dev-ui-experiments-built-on-coss-ui.tsx",
+    "components/resources/demos/r-devl-dev.tsx"
+   ]
+  },
+  {
+   "tool": "react-doctor",
+   "rule": "motion-animate-presence-must-outlive-child",
+   "severity": "warning",
+   "file": "components/resources/demos/r-design-principles.tsx",
+   "message": "AnimatePresence unmounts with its exiting child",
+   "count": 25,
+   "files": [
+    "components/resources/demos/r-design-principles.tsx",
+    "components/resources/demos/r-design-system-checklist.tsx",
+    "components/resources/demos/r-devouring-details.tsx",
+    "components/resources/demos/r-emil-kowalski-2.tsx"
+   ]
+  },
+  {
+   "tool": "biome",
+   "rule": "lint/a11y/noStaticElementInteractions",
+   "severity": "error",
+   "file": "components/resources/demos/interaction.tsx",
+   "message": "Unexpected event handler on static element.",
+   "count": 22,
+   "files": [
+    "components/resources/demos/interaction.tsx",
+    "components/resources/demos/r-assistant-ui.tsx",
+    "components/resources/demos/r-devl-dev-ui-experiments-built-on-coss-ui.tsx",
+    "components/resources/demos/r-emilkowalski-skills.tsx"
+   ]
+  },
+  {
+   "tool": "biome",
+   "rule": "lint/correctness/useExhaustiveDependencies",
+   "severity": "error",
+   "file": "components/resources/demos/r-dither-kit.tsx",
+   "message": "This hook does not specify its dependency on order.",
+   "count": 10,
+   "files": [
+    "components/resources/demos/r-dither-kit.tsx",
+    "components/resources/demos/r-introducing.tsx",
+    "components/resources/demos/r-liveline-2.tsx",
+    "components/resources/demos/r-mapcn-beautiful-maps-made-simple.tsx"
+   ]
+  },
+  {
+   "tool": "biome",
+   "rule": "suppressions/unused",
+   "severity": "warning",
+   "file": "components/resources/demos/r-mui-base-ui.tsx",
+   "message": "Suppression comment has no effect. Remove the suppression or make sure you are suppressing the correct rule.",
+   "count": 8,
+   "files": [
+    "components/resources/demos/r-mui-base-ui.tsx"
+   ]
+  },
+  {
+   "tool": "biome",
+   "rule": "lint/a11y/noSvgWithoutTitle",
+   "severity": "error",
+   "file": "components/resources/demos/r-devouring-details.tsx",
+   "message": "Alternative text title element cannot be empty",
+   "count": 8,
+   "files": [
+    "components/resources/demos/r-devouring-details.tsx",
+    "components/resources/demos/r-dialkit.tsx",
+    "components/resources/demos/r-mapcn-beautiful-maps-made-simple.tsx",
+    "components/resources/demos/r-nicobailon-visual-explainer.tsx"
+   ]
+  },
+  {
+   "tool": "react-doctor",
+   "rule": "no-ref-current-in-render",
+   "severity": "error",
+   "file": "components/resources/demos/r-dialkit.tsx",
+   "message": "Ref mutated during render",
+   "count": 8,
+   "files": [
+    "components/resources/demos/r-dialkit.tsx",
+    "components/resources/demos/r-dither-kit.tsx",
+    "components/resources/demos/r-liveline-2.tsx",
+    "components/resources/demos/r-mickadesign-fluid-functionalism.tsx"
+   ]
+  },
+  {
+   "tool": "react-doctor",
+   "rule": "pointer-capture-needs-cancel-handler",
+   "severity": "warning",
+   "file": "components/resources/demos/r-devouring-details.tsx",
+   "message": "Captured pointer interaction has no cancellation path",
+   "count": 7,
+   "files": [
+    "components/resources/demos/r-devouring-details.tsx",
+    "components/resources/demos/r-emil-kowalski-2.tsx",
+    "components/resources/demos/r-formcn-shadcn-form-builder.tsx",
+    "components/resources/demos/r-fragcoord-xyz.tsx"
+   ]
+  },
+  {
+   "tool": "biome",
+   "rule": "lint/a11y/noAriaHiddenOnFocusable",
+   "severity": "error",
+   "file": "components/resources/demos/r-mapcn-beautiful-maps-made-simple.tsx",
+   "message": "Incorrect use of aria-hidden=\"true\" detected.",
+   "count": 5,
+   "files": [
+    "components/resources/demos/r-mapcn-beautiful-maps-made-simple.tsx",
+    "components/resources/demos/r-paper-shaders-ultra-fast-zero-dependency-shaders.tsx",
+    "components/resources/demos/r-tt-a1i-archify.tsx"
+   ]
+  }
+ ]
+}

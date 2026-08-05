@@ -1,0 +1,168 @@
+#!/usr/bin/env python3
+"""Query the local design-resource catalogue.
+
+  ./find toast                    search title + description
+  ./find chart --format use       restrict to a format
+  ./find --format read            list everything in a format
+  ./find --all                    every entry, one line each
+  ./find --stats                  what is in the catalogue
+  ./find x --include-incompatible show entries ruled out for this stack
+
+Formats (the desengs.com taxonomy — "what do I do with this?"):
+  read watch listen browse use build learn join follow apply
+"""
+
+import json
+import os
+import re
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+DATA = os.path.join(HERE, "resources.json")
+
+MARK = {"installed": "[IN REPO]", "vendored": "[VENDORED]", "external": ""}
+
+# Entries that cannot work in this stack at all. Kept in the file so
+# nobody re-researches them, hidden from results so nobody installs one.
+VERDICT_MARK = {
+    "incompatible": "[WON'T WORK HERE]",
+    "caution": "[CAVEAT]",
+}
+
+
+def load():
+    with open(DATA) as f:
+        return json.load(f)
+
+
+def score(item, terms):
+    title = item["title"].lower()
+    desc = item.get("description", "").lower()
+    url = item["url"].lower()
+    total = 0
+    for t in terms:
+        s = 0
+        if t in title:
+            s += 10
+            if title.startswith(t):
+                s += 5
+        if t in desc:
+            s += 4
+        if t in url:
+            s += 2
+        if not s:
+            return 0  # every term must match somewhere
+        total += s
+    return total
+
+
+def show(item):
+    mark = MARK[item["status"]]
+    kind = item.get("kind", "")
+    head = f"{item['title']}  ({item['format']}"
+    head += f" · {kind})" if kind else ")"
+    if mark:
+        head += f"  {mark}"
+    v = VERDICT_MARK.get(item.get("verdict", ""))
+    if v:
+        head += f"  {v}"
+    print(head)
+
+    if item.get("use_when"):
+        print(f"  → {item['use_when']}")
+    elif item.get("description"):
+        print(f"  {item['description']}")
+
+    print(f"  {item['url']}")
+
+    if item.get("local"):
+        print(f"  ALREADY HERE: {item['local']}")
+    if item.get("install"):
+        print(f"  install: {item['install']}")
+
+    compat = item.get("compat", "")
+    if compat and compat != "ok":
+        # Anything that is not a bare "ok" is a real, verified blocker.
+        prefix = "  compat:" if compat == "unknown" else "  ⚠ COMPAT:"
+        print(f"{prefix} {compat}")
+
+    if item.get("gotcha"):
+        print(f"  gotcha: {item['gotcha']}")
+    if item.get("fetch"):
+        kb = item.get("fetch_bytes", 0) / 1024
+        print(f"  docs ({item['fetch_kind']}, {kb:.0f}KB): {item['fetch']}")
+    print()
+
+
+def main(argv):
+    args, fmt, limit = [], None, 12
+    show_incompatible = False
+    it = iter(range(len(argv)))
+    i = 0
+    while i < len(argv):
+        a = argv[i]
+        if a in ("-f", "--format"):
+            i += 1
+            fmt = argv[i]
+        elif a in ("-n", "--limit"):
+            i += 1
+            limit = int(argv[i])
+        elif a == "--all":
+            limit = 10**6
+            args.append("__ALL__")
+        elif a == "--include-incompatible":
+            show_incompatible = True
+        elif a == "--stats":
+            items = load()
+            from collections import Counter
+            print(f"{len(items)} resources")
+            print("by format:", dict(Counter(x["format"] for x in items)))
+            print("in this repo:", sum(1 for x in items if x["status"] != "external"))
+            print("with a machine-readable fetch path:",
+                  sum(1 for x in items if x.get("fetch")))
+            return 0
+        elif a in ("-h", "--help"):
+            print(__doc__)
+            return 0
+        else:
+            args.append(a)
+        i += 1
+
+    items = load()
+    if fmt:
+        items = [x for x in items if x["format"] == fmt]
+
+    # Do not offer things that cannot work here. `--include-incompatible`
+    # brings them back when you want to know *why* one was ruled out.
+    hidden = 0
+    if not show_incompatible:
+        before = len(items)
+        items = [x for x in items if x.get("verdict") != "incompatible"]
+        hidden = before - len(items)
+
+    terms = [t.lower() for t in args if t != "__ALL__"]
+    if terms:
+        ranked = sorted(
+            ((score(x, terms), x) for x in items),
+            key=lambda p: -p[0],
+        )
+        items = [x for s, x in ranked if s > 0]
+
+    if not items:
+        print(f"No match for {' '.join(terms)!r}.")
+        print("Try a broader term, or `./find --format use` to browse.")
+        print("If the catalogue genuinely lacks it, say so before searching the web.")
+        return 1
+
+    for x in items[:limit]:
+        show(x)
+    if len(items) > limit:
+        print(f"… {len(items) - limit} more. Narrow the query or pass -n.")
+    if hidden:
+        print(f"({hidden} hidden — cannot work in this stack. "
+              f"See them with --include-incompatible.)")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
