@@ -44,3 +44,7 @@ next-env.d.ts
 # design-reference/README.md for what was measured out of them.
 design-reference/*.png
 design-reference/*.jpg
+
+# Scratch screenshots agents leave behind
+/*.png
+/*.jpg
