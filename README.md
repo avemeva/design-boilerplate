@@ -1,121 +1,110 @@
 # Design Boilerplate
 
-A Next.js starting point for building interfaces with an AI agent, where
-the craft knowledge and the resource index already live in the repo.
+A starting point for building websites with an AI agent.
 
-The problem: an agent handed an empty Next.js project re-derives what
-"good" means on every screen, web-searches for libraries it can't verify
-against the stack, and lands on the same generic result every time. This
-repo removes all three steps.
+Most AI-built sites look the same. This is because the agent has to
+guess what "good" means every time. This project writes it down instead,
+so the agent stops guessing.
+
+## Run it
 
 ```bash
 npm install
-npm run dev          # http://localhost:3000
+npm run dev
 ```
 
-Then open `/design-system` — every token rendered at its real value.
+Open the address it prints. Usually <http://localhost:3000>.
 
----
+## What is in the box
 
-## What is in here
+### A written-down style
 
-### `skills/` — the craft, vendored verbatim
+`DESIGN.md` says exactly what things should look like. Colours, text
+sizes, spacing, corners, how fast things move.
 
-28 skills copied unmodified from the people who set the bar. Not
-summaries of them.
+It was not made up. Someone took eight screenshots of a designer's work
+and measured the pixels. The numbers in the file come from those
+measurements.
 
-| Source | What it brings |
+It also has a list of ten steps for making an existing project look this
+way. They are in order. The first three matter most.
+
+### 89 design resources
+
+Articles, tools and libraries worth knowing about. Sorted into three
+piles:
+
+- **Installed** — 9 things already set up and running
+- **Applied** — 59 things with their own page, showing what they teach
+- **Reference** — 11 links, nothing to install
+
+Another 49 were thrown out. Job ads, people to follow, and essays about
+what a design engineer is. Nothing to build with.
+
+### A page per resource
+
+Go to the home page and click any row. Each page has:
+
+1. **The idea**, in one or two sentences
+2. **A Before / After switch**
+
+Press **After**. The same thing on screen turns into the better version.
+Press **Before** to put it back. You can use both.
+
+You should be able to see it got better without reading anything.
+
+### 28 skills for the agent
+
+The `skills/` folder holds guides written by well-known designers,
+copied in word for word. Not summarised. When the agent needs to know
+how to do something, it reads the real thing.
+
+### Tools that check the work
+
+Five of them are installed and run for real:
+
+| Command | What it does |
 | --- | --- |
-| [emilkowalski/skills](https://github.com/emilkowalski/skills) — Emil Kowalski, Linear | Motion philosophy, animation review, Apple-style interaction, prototyping |
-| [jakubkrehel/skills](https://github.com/jakubkrehel/skills) — Jakub Krehel, Interfere | Typography, color, layout, accessibility, UI polish, UX writing |
-| [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) | Anti-slop frontend, high-end visual design, redesign audits, style directions |
-| [raunofreiberg/interfaces](https://github.com/raunofreiberg/interfaces) | Web Interface Guidelines — the interface-detail checklist |
+| `npm run taste` | Checks the project still matches `DESIGN.md` |
+| `npm run taste:calibrate` | Checks the checker itself is not broken |
+| `npm run analysis` | Runs two code checkers, saves what they found |
+| `npm run check` | Biome |
+| `npm run doctor` | react-doctor |
 
-`skills/README.md` indexes them and sets precedence for when they
-disagree. Licenses preserved in `skills/_upstream/`.
+`taste:calibrate` is the useful one. It points the checks at the
+original screenshots. If the checker fails those, the checker is wrong,
+not the project. That caught three bugs in the checker on the first run.
 
-Claude Code discovers them via `.claude/skills` → `../skills`. Other
-agents read `skills/*/SKILL.md` directly.
-
-### `skills/design-resources/` — 138 resources, queryable offline
-
-Two surfaces over one file:
-
-```bash
-skills/design-resources/find toast      # for the agent, mid-task
-skills/design-resources/find chart -f use
-```
-
-```
-/resources          # for humans: searchable index, filtered by format
-/resources/[slug]   # one page per link — install command, caveat, gotcha
-```
-
-Merged from [desengs.com](https://desengs.com/) (74, parsed from the
-canonical data file rather than the rendered site) and the project
-owner's saved-links archive (64). Every actionable entry was opened and
-annotated with:
-
-- **kind** — npm package, shadcn registry, copy-paste, tool, reference
-- **install** — the exact command
-- **compat** — verified against Next 16 / Tailwind v4 / React 19
-- **use_when / gotcha** — when to reach for it, and what bites
-- **status** — `[IN REPO]` / `[VENDORED]` if this project already has it
-
-The point is that an agent never web-searches for a component, and never
-installs something that turns out to need a `tailwind.config.js`.
-
-### `DESIGN.md` — the product brief
-
-Voice, personality, references, density, constraints. **Fill this in
-first.** Skipping it is the single biggest cause of generic output.
-
-### `AGENTS.md` — what is true about this repo
-
-Stack, tokens, conventions, and the two hard gates: query the resource
-catalogue before installing or searching; open the skill before writing
-UI. `CLAUDE.md` points here.
-
----
-
-## The stack
-
-Next.js 16 (App Router, Turbopack, React 19) · Tailwind CSS v4 ·
-shadcn/ui (`radix-nova`) · Motion · next-themes · Sonner · Lucide ·
-NumberFlow · react-hook-form + Zod.
-
-28 shadcn components pre-installed, plus a theme toggle, site header,
-and a copy button demonstrating inline feedback.
-
-## The token layer
-
-Everything design-related is a CSS custom property in
-`src/app/globals.css`, mirrored in `src/lib/motion.ts` for JS:
-
-- **Color** — OKLCH semantic tokens, light and dark
-- **Type** — fluid display sizes via `clamp()`, fixed body sizes
-- **Motion** — five durations, seven named easing curves, three spring
-  configs
-- **Layout** — one content measure, one prose measure
-- **Base layer** — font smoothing, `::selection`, box-shadow focus
-  rings, tabular figures, reduced-motion, iOS text-size-adjust
-
-Tailwind v4 has no config file: add a variable inside `@theme` and the
-utility appears.
-
----
-
-## Using it
+## Using it for a real project
 
 1. `npm install && npm run dev`
-2. Fill in `DESIGN.md` with the user.
-3. Encode the color and type decisions in `src/app/globals.css`.
-4. Delete `src/app/page.tsx` and build.
+2. Read `DESIGN.md`. Change the colours and text to suit your product.
+3. Delete `src/app/page.tsx` and `src/app/applied` and build your thing.
+4. Run `npm run taste` as you go.
 
----
+The agent should read `AGENTS.md` first. It says what is true about
+this project and where to look for what.
 
-## Credit
+## What it is built with
 
-Resource curation from [desengs.com](https://desengs.com/) by
-[Maze Heart](https://x.com/remvze). Vendored skills remain under their
-upstream MIT licenses.
+Next.js 16, React 19, Tailwind CSS v4, shadcn/ui, Motion.
+
+## Honest list of what is not done
+
+- 7 of the 66 resource pages are still in the old format
+- `npm run lint` reports about 26 problems, mostly in pages an agent
+  wrote. The site builds and runs
+- Some wording on the pages is still too clever. It needs one more pass
+- A few pages say "TODO" where the idea should be
+
+## Where it came from
+
+The resources come from [desengs.com](https://desengs.com/) and a saved
+links file.
+
+The look comes from [Louis Nguyen's work](https://dribbble.com/louisdainguyen).
+His screenshots are not in this repo — they are his. What was measured
+out of them is in `design-reference/README.md`.
+
+The skills belong to the people who wrote them and keep their MIT
+licences. See `skills/_upstream/`.
